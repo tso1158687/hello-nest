@@ -1,20 +1,23 @@
 import { Controller, Get, Post, Request, Response, Param, Next, HttpStatus } from '@nestjs/common';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
+    users = this.userService.getUserData();
+    constructor(private userService: UsersService) {}
     @Get()
     // 使用Express的參數
     getAllUsers( @Request() req, @Response() res, @Next() next) {
         // 假資料
-        const users = [{ Name: 'Michael', Age: 25 }, {Name: 'Jason', Age: 25}];
         // 多種HttpStatus可用
-        res.status(HttpStatus.OK).json(users);
+        res.status(HttpStatus.OK).json(this.users);
     }
 
     @Get('/:id')
     // 使用Express的參數
     getUser( @Param() params) {
-        return { getUser: params.id };
+        return this.users[params.id];
+        // return { getUser: params.id };
     }
 
     @Post()
