@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Request, Response, Param, Next, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Request, Response, Param, Next, HttpStatus, Body } from '@nestjs/common';
 import { UsersService } from './users.service';
-
+import { CreateUserDTO } from './dto/create-users.dto';
 @Controller('users')
 export class UsersController {
     users = this.userService.getUserData();
@@ -21,5 +21,8 @@ export class UsersController {
     }
 
     @Post()
-    addUser() { }
+    addUser(@Body() createUserDTO: CreateUserDTO) {
+        // 顯示POST過來的body請求體
+        console.log('姓名:', createUserDTO._name, '年紀:', createUserDTO._age);
+    }
 }
