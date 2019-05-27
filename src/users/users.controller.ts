@@ -15,15 +15,6 @@ export class UsersController {
             res.status(HttpStatus.OK).json(user);
         });
     }
-
-    @Get('/:id')
-    // 使用Express的參數
-    getUser( @Param() params, @Response() res) {
-        this.userService.getUser(params.id).subscribe(user => {
-            res.status(201).json(user);
-        });
-    }
-
     @Post()
     addUser( @Response() res, @Body() createUserDTO: CreateUserDTO) {
         // 使用Rx.js，所以回傳可以做更多資料流的處理
@@ -34,12 +25,18 @@ export class UsersController {
     @Get('/getAllProducts')
     // 使用Express的參數
     getAllProducts( @Request() req, @Response() res, @Next() next) {
-        res.status(HttpStatus.OK).json([1, 2, 3, 4]);
-        // console.log('get all products');
-        // this.productService.getAllProducts().subscribe(data => {
-        //     console.log('data');
-        //     console.log(data);
-        //     res.status(HttpStatus.OK).json([1, 2, 3, 4]);
-        // });
+        console.log('get all products');
+        this.productService.getAllProducts().subscribe(data => {
+            console.log('data');
+            console.log(data);
+            res.status(HttpStatus.OK).json(data);
+        });
+    }
+    @Get('/:id')
+    // 使用Express的參數
+    getUser( @Param() params, @Response() res) {
+        this.userService.getUser(params.id).subscribe(user => {
+            res.status(201).json(user);
+        });
     }
 }
