@@ -7,8 +7,8 @@ export class ProductController {
     @Get()
     // 使用Express的參數
     getAllProducts( @Request() req, @Response() res, @Next() next) {
-        this.productService.getAllProducts().subscribe(user => {
-            res.status(HttpStatus.OK).json(user);
+        this.productService.getAllProducts().subscribe(data => {
+            res.status(HttpStatus.OK).json(data);
         });
     }
 
