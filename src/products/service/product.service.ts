@@ -10,6 +10,7 @@ export class ProductService {
         {name: 'license', id: 5},
     ];
     getAllProducts() {
+        console.log('經過這裡??');
         return of(this.products);
     }
 }

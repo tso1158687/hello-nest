@@ -2,9 +2,10 @@ import { Controller, Get, Post, Request, Response, Param, Next, HttpStatus, Body
 import { UsersService } from './users.service';
 import { CreateUserDTO } from './dto/create-users.dto';
 import { tap } from 'rxjs/operators';
+import { ProductService } from 'src/products/service/product.service';
 @Controller('users')
 export class UsersController {
-    constructor(private userService: UsersService) {}
+    constructor(private userService: UsersService, private productService: ProductService) {}
     @Get()
     // 使用Express的參數
     getAllUsers( @Request() req, @Response() res, @Next() next) {
@@ -29,5 +30,16 @@ export class UsersController {
         this.userService.addUser(createUserDTO).subscribe((users) => {
             res.status(HttpStatus.OK).json(users);
         });
+    }
+    @Get('/getAllProducts')
+    // 使用Express的參數
+    getAllProducts( @Request() req, @Response() res, @Next() next) {
+        res.status(HttpStatus.OK).json([1, 2, 3, 4]);
+        // console.log('get all products');
+        // this.productService.getAllProducts().subscribe(data => {
+        //     console.log('data');
+        //     console.log(data);
+        //     res.status(HttpStatus.OK).json([1, 2, 3, 4]);
+        // });
     }
 }
