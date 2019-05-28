@@ -1,12 +1,16 @@
-import { Controller, Get, Post, Request, Response, Param, Next, HttpStatus, Body, HttpException  } from '@nestjs/common';
+import { Controller, Get, Post, Request, Response, Param, Next, HttpStatus, Body, HttpException, UsePipes, UseGuards  } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDTO } from './dto/create-users.dto';
 import { tap } from 'rxjs/operators';
 import { ProductService } from 'src/products/service/product.service';
+import { ValidationPipe } from '../share/validation.pipe';
+import { RoleGuard } from '../share/role.guard';
+
 @Controller('users')
 export class UsersController {
     constructor(private userService: UsersService, private productService: ProductService) {}
     @Get()
+    @UseGuards(RoleGuard)
     // 使用Express的參數
     getAllUsers( @Request() req, @Response() res, @Next() next) {
         // 假資料
@@ -16,7 +20,8 @@ export class UsersController {
         });
     }
     @Post()
-    addUser( @Response() res, @Body() createUserDTO: CreateUserDTO) {
+    @UsePipes(ValidationPipe)
+    addUser( @Response() res, @Body('Name') createUserDTO: CreateUserDTO) {
         // 使用Rx.js，所以回傳可以做更多資料流的處理
         this.userService.addUser(createUserDTO).subscribe((users) => {
             res.status(HttpStatus.OK).json(users);
